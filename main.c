@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <time.h>
@@ -23,7 +24,9 @@ void handleChild() {
 
 void handlePossibleForkFail(pid_t p) {
     if (p < 0) {
-        perror("fork fail"); // output to stderr instead of stdout
+        char err[256];
+        sprintf(err, "Error: %s\n", strerror(errno));
+        perror(err); // output to stderr instead of stdout
         exit(1);
     }
 }
